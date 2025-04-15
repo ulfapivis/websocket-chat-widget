@@ -1,0 +1,28 @@
+{
+  "name": "websocket-chat-widget",
+  "version": "1.0.0",
+  "description": "A customizable WebSocket chat widget for websites",
+  "main": "dist/websocket-chat-widget.js",
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "node scripts/build.js"
+  },
+  "keywords": [
+    "chat",
+    "widget",
+    "websocket",
+    "ui",
+    "web-component"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {},
+  "peerDependencies": {
+    "dompurify": "^2.3.0",
+    "marked": "^4.0.0"
+  }
+}

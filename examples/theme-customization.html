@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebSocket Chat Widget - Theme Customization</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        h1 {
+            color: #2563eb;
+            margin-bottom: 20px;
+        }
+        
+        .instructions {
+            background-color: #f9fafb;
+            border-left: 4px solid #2563eb;
+            padding: 15px;
+            margin-bottom: 30px;
+        }
+        
+        pre {
+            background-color: #f3f4f6;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        
+        code {
+            font-family: monospace;
+        }
+        
+        .theme-controls {
+            background-color: #f9fafb;
+            padding: 20px;
+            border-radius: 5px;
+            margin-bottom: 30px;
+        }
+        
+        .color-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin: 15px 0;
+        }
+        
+        .color-option {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .color-swatch {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-bottom: 5px;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: transform 0.2s;
+        }
+        
+        .color-swatch:hover {
+            transform: scale(1.1);
+        }
+        
+        .color-swatch.active {
+            border-color: #000;
+        }
+        
+        .color-label {
+            font-size: 12px;
+        }
+        
+        .theme-section {
+            margin-bottom: 20px;
+        }
+        
+        h3 {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>WebSocket Chat Widget - Theme Customization</h1>
+    
+    <div class="instructions">
+        <p>This page demonstrates how to customize the appearance of the WebSocket Chat Widget.</p>
+        <p>Click on the color swatches below to change the widget's theme in real-time.</p>
+        <p>Then click on the chat icon in the bottom-right corner to see the changes.</p>
+    </div>
+
+    <div class="theme-controls">
+        <div class="theme-section">
+            <h3>Primary Color</h3>
+            <p>Used for the chat button, header, and send button</p>
+            <div class="color-options" id="primary-colors">
+                <div class="color-option">
+                    <div class="color-swatch active" style="background-color: #2563eb;" data-color="#2563eb"></div>
+                    <div class="color-label">Blue</div>
+                </div>
+                <div class="color-option">
+                    <div class="color-swatch" style="background-color: #16a34a;" data-color="#16a34a"></div>
+                    <div class="color-label">Green</div>
+                </div>
+                <div class="color-option">
+                    <div class="color-swatch" style="background-color: #dc2626;" data-color="#dc2626"></div>
+                    <div class="color-label">Red</div>
+                </div>
+                <div class="color-option">
+                    <div class="color-swatch" style="background-color: #9333ea;" data-color="#9333ea"></div>
+                    <div class="color-label">Purple</div>
+                </div>
+                <div class="color-option">
+                    <div class="color-swatch" style="background-color: #ea580c;" data-color="#ea580c"></div>
+                    <div class="color-label">Orange</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="theme-section">
+            <h3>User Message Background</h3>
+            <div class="color-options" id="user-message-bg">
+                <div class="color-option">
+                    <div class="color-swatch active" style="background-color: #dbeafe;" data-color="#dbeafe"></div>
+                    <div class="color-label">Light Blue</div>
+                </div>
+                <div class="color-option">
+                    <div class="color-swatch" style="background-color: #dcfce7;" data-color="#dcfce7"></div>
+                    <div class="color-label">Light Green</div>
+                </div>
+                <div class="color-option">
+                    <div class="color-swatch" style="background-color: #fee2e2;" data-color="#fee2e2"></div>
+                    <div class="color-label">Light Red</div>
+                </div>
+                <div class="color-option">
+                    <div class="color-swatch" style="background-color: #f3e8ff;" data-color="#f3e8ff"></div>
+                    <div class="color-label">Light Purple</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="theme-section">
+            <h3>Bot Message Background</h3>
+            <div class="color-options" id="bot-message-bg">
+                <div class="color-option">
+                    <div class="color-swatch active" style="background-color: #f3f4f6;" data-color="#f3f4f6"></div>
+                    <div class="color-label">Light Gray</div>
+                </div>
+                <div class="color-option">
+                    <div class="color-swatch" style="background-color: #ffffff;" data-color="#ffffff"></div>
+                    <div class="color-label">White</div>
+                </div>
+                <div class="color-option">
+                    <div class="color-swatch" style="background-color: #f8fafc;" data-color="#f8fafc"></div>
+                    <div class="color-label">Slate</div>
+                </div>
+                <div class="color-option">
+                    <div class="color-swatch" style="background-color: #fafaf9;" data-color="#fafaf9"></div>
+                    <div class="color-label">Stone</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Include dependencies -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dompurify/dist/purify.min.js"></script>
+    
+    <!-- Include the WebSocket Chat Widget -->
+    <script src="../dist/websocket-chat-widget.js"></script>
+    
+    <!-- Widget Implementation -->
+    <script>
+        let chatWidget;
+        
+        // Initialize the chat widget once the page is fully loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            // Current theme settings
+            const theme = {
+                primaryColor: '#2563eb',
+                secondaryColor: '#1e40af',
+                userMessageBg: '#dbeafe',
+                userMessageText: '#1e40af',
+                botMessageBg: '#f3f4f6',
+                botMessageText: '#1f2937'
+            };
+            
+            // Initialize chat widget
+            chatWidget = new WebSocketChatWidget({
+                websocket: {
+                    url: 'wss://echo.websocket.org',
+                    autoConnect: true
+                },
+                chatId: 'theme-demo-id',
+                theme: theme,
+                text: {
+                    headerTitle: 'Theme Customization',
+                    welcomeMessage: 'Welcome to the theme customization demo!\n\nTry changing the colors using the controls on the page to see how the widget appearance changes.',
+                }
+            });
+            
+            // Set up theme customization
+            setupThemeControls();
+            
+            // Mock response handler (since we're using an echo server)
+            if (chatWidget.socket) {
+                const originalOnMessage = chatWidget.socket.onmessage;
+                chatWidget.socket.onmessage = function(event) {
+                    if (originalOnMessage) {
+                        originalOnMessage.call(this, event);
+                    }
+                    
+                    setTimeout(() => {
+                        try {
+                            const data = JSON.parse(event.data);
+                            if (data && data.content) {
+                                const response = {
+                                    content: "I received your message! Notice how the colors of the message bubbles match the theme you've selected.",
+                                    messageId: 'theme-response-' + Date.now(),
+                                    final: true
+                                };
+                                
+                                chatWidget.socket.dispatchEvent(new MessageEvent('message', {
+                                    data: JSON.stringify(response)
+                                }));
+                            }
+                        } catch (e) {
+                            console.error('Error creating demo response:', e);
+                        }
+                    }, 1000);
+                };
+            }
+        });
+        
+        // Set up the theme customization controls
+        function setupThemeControls() {
+            // Primary color
+            setupColorOptions('primary-colors', (color) => {
+                // Calculate a darker shade for the secondary color
+                const secondaryColor = darkenColor(color, 20);
+                updateWidget({
+                    primaryColor: color,
+                    secondaryColor: secondaryColor,
+                    userMessageText: secondaryColor
+                });
+            });
+            
+            // User message background
+            setupColorOptions('user-message-bg', (color) => {
+                updateWidget({
+                    userMessageBg: color
+                });
+            });
+            
+            // Bot message background
+            setupColorOptions('bot-message-bg', (color) => {
+                updateWidget({
+                    botMessageBg: color
+                });
+            });
+        }
+        
+        // Helper for setting up color option clicks
+        function setupColorOptions(containerId, callback) {
+            const container = document.getElementById(containerId);
+            const swatches = container.querySelectorAll('.color-swatch');
+            
+            swatches.forEach(swatch => {
+                swatch.addEventListener('click', () => {
+                    // Remove active class from all swatches in this container
+                    swatches.forEach(s => s.classList.remove('active'));
+                    
+                    // Add active class to clicked swatch
+                    swatch.classList.add('active');
+                    
+                    // Get color and call callback
+                    const color = swatch.getAttribute('data-color');
+                    callback(color);
+                });
+            });
+        }
+        
+        // Update the chat widget theme
+        function updateWidget(themeUpdates) {
+            if (!chatWidget) return;
+            
+            // Create new theme by merging current theme with updates
+            chatWidget.config.theme = Object.assign({}, chatWidget.config.theme, themeUpdates);
+            
+            // We would need to recreate the widget to apply new theme
+            // In a real implementation, the widget would have an updateTheme method
+            
+            // For this demo, we'll reload the page to apply the changes
+            // Note: In a production widget, you would implement a proper updateTheme method
+            const currentTheme = chatWidget.config.theme;
+            
+            // Store theme in localStorage
+            localStorage.setItem('demo-chat-theme', JSON.stringify(currentTheme));
+            
+            // Reload to apply changes (in a real widget, this wouldn't be necessary)
+            //window.location.reload();
+            
+            // For this demo version, we'll just show a notification
+            const notification = document.createElement('div');
+            notification.textContent = 'Theme updated! Open or reopen the chat to see changes.';
+            notification.style.position = 'fixed';
+            notification.style.bottom = '80px';
+            notification.style.right = '20px';
+            notification.style.backgroundColor = currentTheme.primaryColor;
+            notification.style.color = 'white';
+            notification.style.padding = '10px 15px';
+            notification.style.borderRadius = '4px';
+            notification.style.zIndex = '9999';
+            notification.style.transition = 'opacity 0.3s';
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.opacity = '0';
+                setTimeout(() => {
+                    notification.remove();
+                }, 300);
+            }, 3000);
+        }
+        
+        // Helper to darken a hex color
+        function darkenColor(hex, percent) {
+            // Remove # if present
+            hex = hex.replace('#', '');
+            
+            // Convert to RGB
+            let r = parseInt(hex.substring(0, 2), 16);
+            let g = parseInt(hex.substring(2, 4), 16);
+            let b = parseInt(hex.substring(4, 6), 16);
+            
+            // Darken
+            r = Math.max(0, Math.floor(r * (100 - percent) / 100));
+            g = Math.max(0, Math.floor(g * (100 - percent) / 100));
+            b = Math.max(0, Math.floor(b * (100 - percent) / 100));
+            
+            // Convert back to hex
+            return '#' + 
+                r.toString(16).padStart(2, '0') + 
+                g.toString(16).padStart(2, '0') + 
+                b.toString(16).padStart(2, '0');
+        }
+    </script>
+    
+    <h2>Implementation Code</h2>
+    <pre><code>// Include dependencies
+&lt;script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js">&lt;/script>
+&lt;script src="https://cdn.jsdelivr.net/npm/dompurify/dist/purify.min.js">&lt;/script>
+
+// Include the WebSocket Chat Widget
+&lt;script src="https://cdn.jsdelivr.net/gh/username/websocket-chat-widget@1.0.0/dist/websocket-chat-widget.min.js">&lt;/script>
+
+// Initialize the chat widget with custom theme
+const chatWidget = new WebSocketChatWidget({
+    websocket: {
+        url: 'wss://your-websocket-server.com/endpoint',
+        autoConnect: true
+    },
+    chatId: 'your-unique-chat-id',
+    theme: {
+        primaryColor: '#16a34a',     // Green theme
+        secondaryColor: '#0f6635',   // Darker green
+        userMessageBg: '#dcfce7',    // Light green background
+        userMessageText: '#0f6635',  // Dark green text
+        botMessageBg: '#f3f4f6',     // Light gray background
+        botMessageText: '#1f2937'    // Dark gray text
+    }
+});</code></pre>
+</body>
+</html>

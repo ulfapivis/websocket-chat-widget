@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebSocket Chat Widget - WebSocket Example</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        h1 {
+            color: #2563eb;
+            margin-bottom: 20px;
+        }
+        
+        .instructions {
+            background-color: #f9fafb;
+            border-left: 4px solid #2563eb;
+            padding: 15px;
+            margin-bottom: 30px;
+        }
+        
+        pre {
+            background-color: #f3f4f6;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        
+        code {
+            font-family: monospace;
+        }
+        
+        .demo-controls {
+            background-color: #f3f4f6;
+            padding: 20px;
+            border-radius: 5px;
+            margin-bottom: 30px;
+        }
+        
+        button {
+            background-color: #2563eb;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        
+        button:hover {
+            background-color: #1d4ed8;
+        }
+        
+        #server-status {
+            margin-top: 10px;
+            font-weight: bold;
+        }
+        
+        .status-connected {
+            color: #16a34a;
+        }
+        
+        .status-disconnected {
+            color: #dc2626;
+        }
+    </style>
+</head>
+<body>
+    <h1>WebSocket Chat Widget - WebSocket Example</h1>
+    
+    <div class="instructions">
+        <p>This page demonstrates the WebSocket Chat Widget with a mock local WebSocket server.</p>
+        <p>Click on the chat icon in the bottom-right corner to open the chat widget.</p>
+    </div>
+
+    <div class="demo-controls">
+        <h3>Demo Controls</h3>
+        <p>In a real implementation, you would connect to your own WebSocket server.</p>
+        <p>For this demo, we're using a simulation of a WebSocket server.</p>
+        <div id="server-status" class="status-disconnected">Server Status: Disconnected</div>
+    </div>
+
+    <!-- Include dependencies -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dompurify/dist/purify.min.js"></script>
+    
+    <!-- Include the WebSocket Chat Widget -->
+    <script src="../dist/websocket-chat-widget.js"></script>
+    
+    <!-- Widget Implementation -->
+    <script>
+        // Initialize the chat widget once the page is fully loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set up a mock WebSocket server (this wouldn't be needed in real usage with a real server)
+            class MockWebSocket extends EventTarget {
+                constructor(url) {
+                    super();
+                    this.url = url;
+                    this.readyState = 0; // CONNECTING
+                    
+                    // Simulate connection process
+                    setTimeout(() => {
+                        this.readyState = 1; // OPEN
+                        document.getElementById('server-status').textContent = 'Server Status: Connected';
+                        document.getElementById('server-status').className = 'status-connected';
+                        
+                        // Dispatch open event
+                        const openEvent = new Event('open');
+                        this.dispatchEvent(openEvent);
+                    }, 1000);
+                }
+                
+                send(data) {
+                    try {
+                        // Parse the sent message
+                        const message = JSON.parse(data);
+                        
+                        // Simulate server processing and response after a short delay
+                        setTimeout(() => {
+                            let response;
+                            
+                            // Create a response based on the input
+                            if (message.content.toLowerCase().includes('hello')) {
+                                response = {
+                                    content: "Hello there! How can I help you today?",
+                                    messageId: 'mock-response-' + Date.now(),
+                                    final: true
+                                };
+                            } else if (message.content.toLowerCase().includes('help')) {
+                                response = {
+                                    content: "I'm here to help! What do you need assistance with?",
+                                    messageId: 'mock-response-' + Date.now(),
+                                    final: true
+                                };
+                            } else if (message.content.toLowerCase().includes('bye')) {
+                                response = {
+                                    content: "Goodbye! Feel free to come back if you have more questions.",
+                                    messageId: 'mock-response-' + Date.now(),
+                                    final: true
+                                };
+                            } else {
+                                response = {
+                                    content: "I received your message: \"" + message.content + "\"\n\nThis is a mock server response. Try saying 'hello', 'help', or 'bye' for different responses.",
+                                    messageId: 'mock-response-' + Date.now(),
+                                    final: true
+                                };
+                            }
+                            
+                            // Simulate a streaming response for longer messages
+                            if (response.content.length > 50) {
+                                const firstPart = response.content.substring(0, response.content.length / 2);
+                                const secondPart = response.content.substring(response.content.length / 2);
+                                
+                                // Send the first part
+                                const firstResponse = {
+                                    content: firstPart,
+                                    messageId: response.messageId,
+                                    final: false
+                                };
+                                
+                                const messageEvent1 = new MessageEvent('message', {
+                                    data: JSON.stringify(firstResponse)
+                                });
+                                this.dispatchEvent(messageEvent1);
+                                
+                                // Send the second part after a delay
+                                setTimeout(() => {
+                                    const secondResponse = {
+                                        content: secondPart,
+                                        messageId: response.messageId,
+                                        final: true
+                                    };
+                                    
+                                    const messageEvent2 = new MessageEvent('message', {
+                                        data: JSON.stringify(secondResponse)
+                                    });
+                                    this.dispatchEvent(messageEvent2);
+                                }, 800);
+                            } else {
+                                // Send the full response for shorter messages
+                                const messageEvent = new MessageEvent('message', {
+                                    data: JSON.stringify(response)
+                                });
+                                this.dispatchEvent(messageEvent);
+                            }
+                        }, 500);
+                    } catch (e) {
+                        console.error('Error parsing message:', e);
+                    }
+                }
+                
+                close() {
+                    this.readyState = 3; // CLOSED
+                    document.getElementById('server-status').textContent = 'Server Status: Disconnected';
+                    document.getElementById('server-status').className = 'status-disconnected';
+                    
+                    // Dispatch close event
+                    const closeEvent = new Event('close');
+                    this.dispatchEvent(closeEvent);
+                }
+            }
+            
+            // Replace the global WebSocket with our mock implementation for this demo
+            const OriginalWebSocket = window.WebSocket;
+            window.WebSocket = MockWebSocket;
+            
+            // Create and configure the chat widget
+            const chatWidget = new WebSocketChatWidget({
+                websocket: {
+                    url: 'wss://example-mock-server/chat',
+                    autoConnect: true
+                },
+                chatId: 'example-websocket-id',
+                text: {
+                    headerTitle: 'WebSocket Demo',
+                    welcomeMessage: 'Welcome to the WebSocket demo! Try sending a message to see how the widget handles WebSocket communication.\n\nTry keywords like "hello", "help", or "bye" for different responses.',
+                },
+                theme: {
+                    primaryColor: '#2563eb',
+                    secondaryColor: '#1e40af'
+                }
+            });
+            
+            // Restore the original WebSocket for other site functionality
+            // (You wouldn't need this in a real implementation)
+            window.WebSocket = OriginalWebSocket;
+        });
+    </script>
+    
+    <h2>Implementation Code</h2>
+    <pre><code>// Include dependencies
+&lt;script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js">&lt;/script>
+&lt;script src="https://cdn.jsdelivr.net/npm/dompurify/dist/purify.min.js">&lt;/script>
+
+// Include the WebSocket Chat Widget
+&lt;script src="https://cdn.jsdelivr.net/gh/username/websocket-chat-widget@1.0.0/dist/websocket-chat-widget.min.js">&lt;/script>
+
+// Initialize the chat widget
+const chatWidget = new WebSocketChatWidget({
+    websocket: {
+        url: 'wss://your-websocket-server.com/endpoint',
+        autoConnect: true
+    },
+    chatId: 'your-unique-chat-id',
+    text: {
+        headerTitle: 'WebSocket Demo',
+        welcomeMessage: 'Welcome to the WebSocket demo!'
+    }
+});</code></pre>
+</body>
+</html>

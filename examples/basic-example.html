@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebSocket Chat Widget - Basic Example</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        h1 {
+            color: #2563eb;
+            margin-bottom: 20px;
+        }
+        
+        .instructions {
+            background-color: #f9fafb;
+            border-left: 4px solid #2563eb;
+            padding: 15px;
+            margin-bottom: 30px;
+        }
+        
+        pre {
+            background-color: #f3f4f6;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        
+        code {
+            font-family: monospace;
+        }
+    </style>
+</head>
+<body>
+    <h1>WebSocket Chat Widget - Basic Example</h1>
+    
+    <div class="instructions">
+        <p>This page demonstrates the WebSocket Chat Widget with minimal configuration.</p>
+        <p>Click on the chat icon in the bottom-right corner to open the chat widget.</p>
+    </div>
+
+    <!-- Include dependencies -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dompurify/dist/purify.min.js"></script>
+    
+    <!-- Include the WebSocket Chat Widget -->
+    <script src="../dist/websocket-chat-widget.js"></script>
+    
+    <!-- Widget Implementation -->
+    <script>
+        // Initialize the chat widget once the page is fully loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            // Create and configure the chat widget
+            const chatWidget = new WebSocketChatWidget({
+                websocket: {
+                    url: 'wss://echo.websocket.org', // Example echo server for testing
+                    autoConnect: true
+                },
+                chatId: 'example-chat-id',
+                text: {
+                    headerTitle: 'Demo Chat',
+                    welcomeMessage: 'Welcome to the demo chat! Try sending a message.',
+                    inputPlaceholder: 'Type a message...'
+                },
+                theme: {
+                    primaryColor: '#2563eb',
+                    secondaryColor: '#1e40af'
+                },
+                predefinedQuestions: {
+                    enabled: true,
+                    position: 'top',
+                    style: 'button',
+                    questions: [
+                        { text: "What is this demo?", value: "What is this demo?" },
+                        { text: "How do I use this widget?", value: "How do I use this widget?" }
+                    ]
+                }
+            });
+            
+            // For demonstration purposes, we'll hijack the WebSocket to respond to messages
+            // since we're using an echo server that just returns what we send
+            if (chatWidget.socket) {
+                const originalOnMessage = chatWidget.socket.onmessage;
+                chatWidget.socket.onmessage = function(event) {
+                    // Call the original handler first (to handle the echo)
+                    if (originalOnMessage) {
+                        originalOnMessage.call(this, event);
+                    }
+                    
+                    // Then add our custom response after a short delay
+                    setTimeout(() => {
+                        try {
+                            const data = JSON.parse(event.data);
+                            if (data && data.content) {
+                                const response = {
+                                    content: `You said: "${data.content}"\n\nThis is a demo bot response. In a real implementation, this would come from your server.`,
+                                    messageId: 'demo-response-' + Date.now(),
+                                    final: true
+                                };
+                                
+                                chatWidget.socket.dispatchEvent(new MessageEvent('message', {
+                                    data: JSON.stringify(response)
+                                }));
+                            }
+                        } catch (e) {
+                            console.error('Error creating demo response:', e);
+                        }
+                    }, 1000);
+                };
+            }
+        });
+    </script>
+    
+    <h2>Implementation Code</h2>
+    <pre><code>// Include dependencies
+&lt;script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js">&lt;/script>
+&lt;script src="https://cdn.jsdelivr.net/npm/dompurify/dist/purify.min.js">&lt;/script>
+
+// Include the WebSocket Chat Widget
+&lt;script src="https://cdn.jsdelivr.net/gh/username/websocket-chat-widget@1.0.0/dist/websocket-chat-widget.min.js">&lt;/script>
+
+// Initialize the chat widget
+const chatWidget = new WebSocketChatWidget({
+    websocket: {
+        url: 'wss://your-websocket-server.com/endpoint',
+        autoConnect: true
+    },
+    chatId: 'your-unique-chat-id',
+    text: {
+        headerTitle: 'Demo Chat',
+        welcomeMessage: 'Welcome to the demo chat! Try sending a message.'
+    },
+    theme: {
+        primaryColor: '#2563eb',
+        secondaryColor: '#1e40af'
+    }
+});</code></pre>
+</body>
+</html>
