@@ -1,216 +1,51 @@
-/**
- * WebSocketChatWidget - Default styles
- * @version 1.0.0
- */
+/* Enhances WebSocket Chat Widget with additional styles for better visibility */
 
-.ws-chat-button {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  background-color: #2563eb;
-  color: white;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  border: none;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-  z-index: 9999;
-  transition: transform 0.2s;
+/* Ensure predefined question buttons have visible text regardless of position */
+[class*="-predefined-button"] {
+    color: inherit;
+    text-align: center; 
+    white-space: normal;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 200px;
+    min-width: 80px;
+    font-size: 14px !important;
+    margin: 2px 4px;
+    opacity: 1 !important;
+    cursor: pointer;
+    transition: all 0.2s ease;
 }
 
-.ws-chat-button:hover {
-  transform: scale(1.05);
+/* Ensure pill styles have proper rounded corners */
+[class*="-predefined-pill"] {
+    border-radius: 24px !important;
 }
 
-.ws-chat-panel {
-  position: fixed;
-  bottom: 100px;
-  right: 20px;
-  width: 380px;
-  height: 550px;
-  background: white;
-  border-radius: 10px;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-  display: none;
-  flex-direction: column;
-  overflow: hidden;
-  z-index: 9998;
+/* Ensure button styles have square corners */
+[class*="-predefined-button"]:not([class*="-predefined-pill"]) {
+    border-radius: 4px !important;
 }
 
-.ws-chat-header {
-  background: #2563eb;
-  color: white;
-  padding: 15px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-weight: bold;
+/* Add a subtle shadow for better visibility */
+[class*="-predefined-container"] button {
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
 }
 
-.ws-chat-close {
-  cursor: pointer;
-  font-size: 20px;
+/* Enhance hover behavior */
+[class*="-predefined-container"] button:hover {
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+    transform: translateY(-1px);
 }
 
-.ws-chat-messages {
-  flex: 1;
-  padding: 15px;
-  overflow-y: auto;
-  display: flex;
-  flex-direction: column;
-}
-
-.ws-chat-message-container {
-  display: flex;
-  max-width: 85%;
-  margin-bottom: 10px;
-  gap: 10px;
-}
-
-.ws-chat-bot-container {
-  align-self: flex-start;
-}
-
-.ws-chat-user-container {
-  align-self: flex-end;
-}
-
-.ws-chat-avatar {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  color: white;
-}
-
-.ws-chat-bot-avatar {
-  background-color: #2563eb;
-  margin-right: 10px;
-}
-
-.ws-chat-user-avatar {
-  background-color: #1e40af;
-  margin-right: 10px;
-}
-
-.ws-chat-message {
-  padding: 10px 15px;
-  border-radius: 18px;
-  overflow-wrap: break-word;
-}
-
-.ws-chat-bot-message {
-  background-color: #f3f4f6;
-  color: #1f2937;
-  border-radius: 18px 18px 18px 0;
-}
-
-.ws-chat-user-message {
-  background-color: #dbeafe;
-  color: #1e40af;
-  border-radius: 18px 18px 0 18px;
-}
-
-.ws-chat-system-message {
-  align-self: center;
-  background-color: #f3f4f6;
-  color: #4b5563;
-  text-align: center;
-  border-radius: 8px;
-  padding: 8px 12px;
-  margin: 10px 0;
-  font-size: 0.875rem;
-}
-
-.ws-chat-input-container {
-  display: flex;
-  padding: 10px;
-  border-top: 1px solid #e5e7eb;
-}
-
-.ws-chat-input {
-  flex: 1;
-  padding: 10px 15px;
-  border-radius: 24px;
-  border: 1px solid #d1d5db;
-  margin-right: 10px;
-  outline: none;
-  font-size: 16px;
-}
-
-.ws-chat-input:focus {
-  border-color: #2563eb;
-}
-
-.ws-chat-send-button {
-  background: #2563eb;
-  color: white;
-  border: none;
-  border-radius: 50%;
-  width: 40px;
-  height: 40px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-/* Typing indicator */
-.ws-chat-typing-indicator {
-  display: flex;
-  align-items: center;
-  margin-bottom: 10px;
-}
-
-.ws-chat-typing-indicator span {
-  height: 8px;
-  width: 8px;
-  background-color: #6b7280;
-  border-radius: 50%;
-  display: inline-block;
-  margin-right: 2px;
-  animation: ws-chat-typing 1.4s infinite both;
-}
-
-.ws-chat-typing-indicator span:nth-child(2) {
-  animation-delay: 0.2s;
-}
-
-.ws-chat-typing-indicator span:nth-child(3) {
-  animation-delay: 0.4s;
-}
-
-@keyframes ws-chat-typing {
-  0% { transform: translateY(0px); }
-  30% { transform: translateY(-5px); }
-  60%, 100% { transform: translateY(0px); }
-}
-
-/* Predefined questions */
-.ws-chat-predefined-container {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  padding: 10px;
-}
-
-.ws-chat-predefined-button {
-  border: none;
-  border-radius: 16px;
-  padding: 8px 16px;
-  font-size: 14px;
-  cursor: pointer;
-  background-color: #3b82f6;
-  color: #ffffff;
-}
-
-.ws-chat-predefined-button:hover {
-  background-color: #2563eb;
+/* Container styles for different positions */
+[class*="-predefined-top"],
+[class*="-predefined-bottom"],
+[class*="-predefined-welcome"] {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 8px 12px;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
 }

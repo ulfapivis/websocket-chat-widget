@@ -2,6 +2,12 @@
 
 A customizable chat widget that connects to a WebSocket server, perfect for adding live chat functionality to websites.
 
+## Version 1.0.1
+- Fixed icon rendering and sizing issues
+- Improved WebSocket connection stability
+- Enhanced markdown rendering for messages
+- Added support for image and URL-based icons
+
 ## Installation via jsDelivr CDN
 
 ```html
@@ -10,15 +16,17 @@ A customizable chat widget that connects to a WebSocket server, perfect for addi
 <script src="https://cdn.jsdelivr.net/npm/dompurify/dist/purify.min.js"></script>
 
 <!-- Chat Widget Script -->
-<script src="https://cdn.jsdelivr.net/gh/username/websocket-chat-widget@1.0.0/dist/websocket-chat-widget.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/username/websocket-chat-widget@1.0.1/dist/websocket-chat-widget.min.js"></script>
 
 <!-- Optional: Chat Widget Styles (if you don't want to use the built-in styles) -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/username/websocket-chat-widget@1.0.0/dist/websocket-chat-widget.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/username/websocket-chat-widget@1.0.1/dist/websocket-chat-widget.css">
 ```
 
 > **Note:** Replace `username` with your actual GitHub username once you've created the repository.
 
 ## Usage
+
+### Basic Usage
 
 ```javascript
 // Initialize the chat widget with configuration options
@@ -39,6 +47,21 @@ const chatWidget = new WebSocketChatWidget({
   }
 });
 ```
+
+## Using the Widget Configurator
+
+The package includes a visual configurator that allows you to customize the widget without writing code. To use it:
+
+1. Open `websocket-chat-widget-configurator.html` in your browser
+2. Customize all aspects of the widget using the visual interface
+3. Click "Generate Code" to get the customized code
+4. Copy and paste the generated code into your website
+
+The configurator allows you to:
+- Set up theme colors and styling
+- Configure predefined questions
+- Customize icons and branding
+- Test the widget appearance in real-time
 
 ## Configuration Options
 
