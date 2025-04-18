@@ -1,6 +1,6 @@
 /**
  * WebSocketChatWidget - A customizable chat widget that connects to a WebSocket server
- * @version 1.0.1
+ * @version 1.0.2
  */
 (function(window) {
   'use strict';
@@ -373,9 +373,16 @@
       inputContainer.appendChild(sendButton);
       chatPanel.appendChild(inputContainer);
       
+      // Create "powered by" element
+      const poweredBy = document.createElement('div');
+      poweredBy.className = `${this.namespace}-powered-by`;
+      poweredBy.innerHTML = 'powered by <a href="https://www.fxrsoft.com" target="_blank">fxrsoft</a>';
+      chatPanel.appendChild(poweredBy);
+      
       this.elements.inputContainer = inputContainer;
       this.elements.chatInput = chatInput;
       this.elements.sendButton = sendButton;
+      this.elements.poweredBy = poweredBy;
     }
     
     /**
@@ -827,6 +834,24 @@
         
         .${ns}-predefined-pill {
           border-radius: 24px;
+        }
+        
+        /* Powered by section */
+        .${ns}-powered-by {
+          text-align: center;
+          font-size: 12px;
+          color: #9ca3af;
+          padding: 5px 0;
+          border-top: 1px solid #e5e7eb;
+        }
+        
+        .${ns}-powered-by a {
+          color: ${theme.primaryColor};
+          text-decoration: none;
+        }
+        
+        .${ns}-powered-by a:hover {
+          text-decoration: underline;
         }
         
         /* Markdown formatting for messages */

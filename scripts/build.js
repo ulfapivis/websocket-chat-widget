@@ -80,7 +80,7 @@ async function minifyJavaScript(source, destination) {
 }
 
 // Main build process
-console.log('🚀 Building WebSocket Chat Widget v1.0.1 for CDN...');
+console.log('🚀 Building WebSocket Chat Widget v1.0.2 for CDN...');
 
 // Process the main JavaScript file
 const jsSource = path.join(srcDir, 'websocket-chat-widget.js');
