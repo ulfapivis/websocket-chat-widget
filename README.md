@@ -2,6 +2,12 @@
 
 A customizable chat widget that connects to a WebSocket server, perfect for adding live chat functionality to websites.
 
+## Version 1.0.2
+- Fixed Markdown parsing after images
+- Improved DOMPurify configuration for better HTML rendering
+- Enhanced content sanitization while preserving all formatting
+- Added support for more HTML tags in messages
+
 ## Version 1.0.1
 - Fixed icon rendering and sizing issues
 - Improved WebSocket connection stability
@@ -16,10 +22,10 @@ A customizable chat widget that connects to a WebSocket server, perfect for addi
 <script src="https://cdn.jsdelivr.net/npm/dompurify/dist/purify.min.js"></script>
 
 <!-- Chat Widget Script -->
-<script src="https://cdn.jsdelivr.net/gh/username/websocket-chat-widget@1.0.1/dist/websocket-chat-widget.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/username/websocket-chat-widget@1.0.2/dist/websocket-chat-widget.min.js"></script>
 
 <!-- Optional: Chat Widget Styles (if you don't want to use the built-in styles) -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/username/websocket-chat-widget@1.0.1/dist/websocket-chat-widget.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/username/websocket-chat-widget@1.0.2/dist/websocket-chat-widget.css">
 ```
 
 > **Note:** Replace `username` with your actual GitHub username once you've created the repository.

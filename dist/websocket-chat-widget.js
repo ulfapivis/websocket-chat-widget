@@ -159,7 +159,9 @@
         sanitize: false, // We'll use DOMPurify instead for better control
         highlight: function(code, lang) {
           return code;
-        }
+        },
+        // Make sure images are properly processed
+        renderer: new marked.Renderer()
       });
     }
     
@@ -1113,7 +1115,12 @@
       if (this.config.sanitization.output) {
         // Convert markdown to HTML and sanitize
         const rawHtml = marked.parse(content);
-        const sanitizedHtml = DOMPurify.sanitize(rawHtml);
+        // Configure DOMPurify to keep more elements and attributes
+        const sanitizedHtml = DOMPurify.sanitize(rawHtml, {
+          ALLOW_TAGS: ['b', 'i', 'em', 'strong', 'a', 'p', 'ul', 'ol', 'li', 'br', 'img', 'pre', 'code', 'blockquote', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'hr', 'span'],
+          ALLOW_ATTR: ['href', 'src', 'alt', 'title', 'target', 'rel', 'class', 'style'],
+          ADD_ATTR: ['target', 'rel']
+        });
         messageEl.innerHTML = sanitizedHtml;
       } else {
         // Just convert markdown to HTML without sanitization
@@ -1284,7 +1291,12 @@
         if (this.config.sanitization.output) {
           // Convert markdown to HTML and sanitize
           const rawHtml = marked.parse(content);
-          const sanitizedHtml = DOMPurify.sanitize(rawHtml);
+          // Configure DOMPurify to keep more elements and attributes
+          const sanitizedHtml = DOMPurify.sanitize(rawHtml, {
+            ALLOW_TAGS: ['b', 'i', 'em', 'strong', 'a', 'p', 'ul', 'ol', 'li', 'br', 'img', 'pre', 'code', 'blockquote', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'hr', 'span'],
+            ALLOW_ATTR: ['href', 'src', 'alt', 'title', 'target', 'rel', 'class', 'style'],
+            ADD_ATTR: ['target', 'rel']
+          });
           message.innerHTML = sanitizedHtml;
         } else {
           // Just convert markdown to HTML without sanitization

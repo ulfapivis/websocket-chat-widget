@@ -1,6 +1,6 @@
 /**
  * WebSocketChatWidget - A customizable chat widget that connects to a WebSocket server
- * @version 1.0.1
+ * @version 1.0.2
  */
 (function(window) {
   'use strict';
@@ -159,7 +159,9 @@
         sanitize: false, // We'll use DOMPurify instead for better control
         highlight: function(code, lang) {
           return code;
-        }
+        },
+        // Make sure images are properly processed
+        renderer: new marked.Renderer()
       });
     }
     
@@ -371,9 +373,16 @@
       inputContainer.appendChild(sendButton);
       chatPanel.appendChild(inputContainer);
       
+      // Create "powered by" element
+      const poweredBy = document.createElement('div');
+      poweredBy.className = `${this.namespace}-powered-by`;
+      poweredBy.innerHTML = 'powered by <a href="https://www.fxrsoft.com" target="_blank">fxrsoft</a>';
+      chatPanel.appendChild(poweredBy);
+      
       this.elements.inputContainer = inputContainer;
       this.elements.chatInput = chatInput;
       this.elements.sendButton = sendButton;
+      this.elements.poweredBy = poweredBy;
     }
     
     /**
@@ -827,6 +836,24 @@
           border-radius: 24px;
         }
         
+        /* Powered by section */
+        .${ns}-powered-by {
+          text-align: center;
+          font-size: 12px;
+          color: #9ca3af;
+          padding: 5px 0;
+          border-top: 1px solid #e5e7eb;
+        }
+        
+        .${ns}-powered-by a {
+          color: ${theme.primaryColor};
+          text-decoration: none;
+        }
+        
+        .${ns}-powered-by a:hover {
+          text-decoration: underline;
+        }
+        
         /* Markdown formatting for messages */
         .${ns}-message a {
           color: ${theme.primaryColor};
@@ -1113,7 +1140,12 @@
       if (this.config.sanitization.output) {
         // Convert markdown to HTML and sanitize
         const rawHtml = marked.parse(content);
-        const sanitizedHtml = DOMPurify.sanitize(rawHtml);
+        // Configure DOMPurify to keep more elements and attributes
+        const sanitizedHtml = DOMPurify.sanitize(rawHtml, {
+          ALLOW_TAGS: ['b', 'i', 'em', 'strong', 'a', 'p', 'ul', 'ol', 'li', 'br', 'img', 'pre', 'code', 'blockquote', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'hr', 'span'],
+          ALLOW_ATTR: ['href', 'src', 'alt', 'title', 'target', 'rel', 'class', 'style'],
+          ADD_ATTR: ['target', 'rel']
+        });
         messageEl.innerHTML = sanitizedHtml;
       } else {
         // Just convert markdown to HTML without sanitization
@@ -1284,7 +1316,12 @@
         if (this.config.sanitization.output) {
           // Convert markdown to HTML and sanitize
           const rawHtml = marked.parse(content);
-          const sanitizedHtml = DOMPurify.sanitize(rawHtml);
+          // Configure DOMPurify to keep more elements and attributes
+          const sanitizedHtml = DOMPurify.sanitize(rawHtml, {
+            ALLOW_TAGS: ['b', 'i', 'em', 'strong', 'a', 'p', 'ul', 'ol', 'li', 'br', 'img', 'pre', 'code', 'blockquote', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'hr', 'span'],
+            ALLOW_ATTR: ['href', 'src', 'alt', 'title', 'target', 'rel', 'class', 'style'],
+            ADD_ATTR: ['target', 'rel']
+          });
           message.innerHTML = sanitizedHtml;
         } else {
           // Just convert markdown to HTML without sanitization
